@@ -8,20 +8,20 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
-
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table
-public class LibraryCard {
+public class BookLending {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String cardNumber;
-    private Date dateIssue;
-    private Date dateExpire;
+    private Date dateLend;
+    private Date dateReturn;
     @ManyToOne
-    private LibraryMember member;
+    private BookItem bookItem;
+    @ManyToOne
+    private LibraryCard libraryCard;
 }

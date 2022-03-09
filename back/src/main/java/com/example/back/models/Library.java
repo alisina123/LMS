@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
-
 
 @Setter
 @Getter
@@ -15,13 +13,10 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Table
-public class LibraryCard {
+public class Library {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String cardNumber;
-    private Date dateIssue;
-    private Date dateExpire;
-    @ManyToOne
-    private LibraryMember member;
+    private String name;
+    private String address;
 }

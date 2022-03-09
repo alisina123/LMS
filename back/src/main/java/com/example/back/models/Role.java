@@ -1,27 +1,28 @@
 package com.example.back.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
-
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table
-public class LibraryCard {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String cardNumber;
-    private Date dateIssue;
-    private Date dateExpire;
-    @ManyToOne
-    private LibraryMember member;
+    private String name;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
+    private Set<User> users = new HashSet<>();
+
 }

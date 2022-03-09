@@ -1,9 +1,7 @@
 package com.example.back.controllers;
 
-
 import com.example.back.models.LibraryCard;
 import com.example.back.services.LibraryCardService;
-import com.example.back.services.LibraryMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +21,7 @@ public class LibraryCardController {
         resMap.put("success", true);
         resMap.put("responseCode", 200);
         resMap.put("message", "All LibraryCardService list");
-        resMap.put("data", libraryCardService.getLibraryCard());
+        resMap.put("data", libraryCardService);
         return ResponseEntity.ok(resMap);
 
     }

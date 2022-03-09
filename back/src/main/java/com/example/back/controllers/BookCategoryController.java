@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
+@RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping(value = "/api")
 public class BookCategoryController {
     @Autowired
     BookCategoryService bookCategoryService;
@@ -18,7 +21,7 @@ public class BookCategoryController {
         resMap.put("success", true);
         resMap.put("responseCode", 200);
         resMap.put("message", "All bookCategories list");
-        resMap.put("data", bookCategoryService.getBookCategory());
+        resMap.put("data", bookCategoryService);
         return ResponseEntity.ok(resMap);
 
     }
