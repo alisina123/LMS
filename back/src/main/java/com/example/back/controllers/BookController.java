@@ -21,7 +21,7 @@ public class BookController {
         resMap.put("success", true);
         resMap.put("responseCode", 200);
         resMap.put("message", "All books list");
-        resMap.put("data", bookService);
+        resMap.put("data", bookService.getBook());
         return ResponseEntity.ok(resMap);
 
     }

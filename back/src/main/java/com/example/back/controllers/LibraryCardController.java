@@ -21,7 +21,7 @@ public class LibraryCardController {
         resMap.put("success", true);
         resMap.put("responseCode", 200);
         resMap.put("message", "All LibraryCardService list");
-        resMap.put("data", libraryCardService);
+        resMap.put("data", libraryCardService.getLibraryCard());
         return ResponseEntity.ok(resMap);
 
     }
