@@ -41,7 +41,7 @@ public class LibraryMemberService {
 
     public LibraryMember findLibraryMemberId(int libraryMemberId) {
         try {
-            return libraryMemberRepository.getById( libraryMemberId);
+            return libraryMemberRepository.findLibraryMemberById( libraryMemberId);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

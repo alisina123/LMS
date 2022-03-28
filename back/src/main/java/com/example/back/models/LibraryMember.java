@@ -27,8 +27,7 @@ public class LibraryMember {
     private String phone;
     private String currentAddress;
     private String identityNumber;
-    @Nullable
-    private String photo ;
+
     private String guarantee;
     @Nullable
     private Date jointYear ;

@@ -12,12 +12,15 @@ import { classNames } from 'primereact/utils'
 import { useNavigate } from 'react-router-dom';
 import { Toast } from 'primereact/toast';
 import axios from 'axios';
-const CreateMember = ({ id }) => {
+
+const CreateMember = ({ id, onSuccess }) => {
+
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData, libraryMembers, setlibraryMember] = useState({});
     const [libraries, setLibraries] = useState([]);
     const navigate = useNavigate();
     const toast = useRef(null);
+    const [date1, setDate1] = useState(null);
     const showSuccess = () => {
         toast.current.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
     }
@@ -38,31 +41,26 @@ const CreateMember = ({ id }) => {
     }
 
     useEffect(() => {
-        if (id) {
-            axios.get(`http://localhost:8080/api/libraryMembers/${id}`).then(res => {
-                reset(res.data.data);
-                
-            });
-        } else {
-            reset()
-        }
-
         axios.get("http://localhost:8080/api/libraries").then(response => {
             setLibraries(response.data.data);
         });
 
-    }, [id]);
-
+    });
     const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues });
 
     const onSubmit = (data) => {
         console.log(data);
         axios.post("http://localhost:8080/api/libraryMembers", data).then(response => {
             console.log(response.data);
-        });
+
+            onSuccess(response);
+
+            toast.current.show({ severity: 'success', summary: 'Success Message', detail: 'Order submitted' }); 
+        })
         reset();
-        navigate('/memberList');
-        toast.current.show({ severity: 'success', summary: 'Success Message', detail: 'Order submitted' });
+        navigate('/');
+
+
 
     };
 
@@ -72,7 +70,7 @@ const CreateMember = ({ id }) => {
     const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => setShowMessage(false)} /></div>;
 
     return <>
-        <div class="card">
+        <div class="card" style={{ marginTop: 20 }}>
             <form onSubmit={handleSubmit(onSubmit)} className="p-fluid" dir='rtl'>
                 <div class="formgrid grid">
                     <div class="field col-12 md:col-3">
@@ -107,6 +105,7 @@ const CreateMember = ({ id }) => {
                             <Controller name="registerNumber" control={control} rules={{ required: 'راجستر نمبرالازمی است.' }} render={({ field, fieldState }) => (
                                 <InputText id={field.registerNumber} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
                             )} />
+
                             <label htmlFor="registerNumber" className={classNames({ 'p-error': errors.registerNumber })}>راجستر نمبر*</label>
                         </span>
                         {getFormErrorMessage('registerNumber')}
@@ -158,12 +157,15 @@ const CreateMember = ({ id }) => {
                     </span>
                         {getFormErrorMessage('guarantee')}</div>
                     <div class="field col-12 md:col-3"> <span className="p-float-label">
-                        <Controller name="jointYear" control={control} rules={{ required: 'سال راجستر الازمی است.' }} render={({ field, fieldState }) => (
+                        <Calendar id="basic" value={date1} onChange={(e) => setDate1(e.value)} name="jointYear" control={control} rules={{ required: 'سال راجستر الازمی است.' }} render={({ field, fieldState }) => (
                             <InputText id={field.jointYear} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
                         )} />
+
                         <label htmlFor="jointYear" className={classNames({ 'p-error': errors.jointYear })}>سال راجستر*</label>
                     </span>
                         {getFormErrorMessage('jointYear')}</div>
+
+
                     <div class="field col-12 md:col-3"><span className="p-float-label">
                         <Controller name="job" control={control} rules={{ required: 'وطیفه الازمی است.' }} render={({ field, fieldState }) => (
                             <InputText id={field.job} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
@@ -174,6 +176,7 @@ const CreateMember = ({ id }) => {
                     <div class="field col-12 md:col-3"> <Controller name="library" control={control} render={({ field }) => (
                         <Dropdown id={field.name} value={field.value} onChange={(e) => field.onChange(e.value)} options={libraries} optionLabel="name" placeholder=" کتابخانه را انتخاب کنید" />
                     )} /></div>
+
                     <div class="field col-12 md:col-3"><div className="field-checkbox">
                         <Controller name="accept" control={control} rules={{ required: true }} render={({ field, fieldState }) => (
                             <Checkbox inputId={field.name} onChange={(e) => field.onChange(e.checked)} checked={field.value} className={classNames({ 'p-invalid': fieldState.invalid })} />
