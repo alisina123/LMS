@@ -14,7 +14,13 @@ export const MemberList = () => {
     const [libraryMembers, setLibraryMembers] = useState([]);
     const toast = useRef(null);
     const [visible, setVisible] = useState(false);
-
+    const [detailsVisble,setDetailsVisble]=useState(false);
+    const [selectedId, setSelectedId] = useState();
+    
+    const onHide=()=>{
+        setVisible(false);
+        setSelectedId(null);
+    }
     useEffect(() => {
 
         axios.get("http://localhost:8080/api/libraryMembers").then(response => {
@@ -25,13 +31,15 @@ export const MemberList = () => {
     }, []);
     const detailsBody = (rowData) => {
         console.log(rowData)
-        return <Link to={`/memeberListDetails/${rowData.id}`}>جزیات</Link>
         
+        return <Button onClick={() => {setDetailsVisble(true); setSelectedId(rowData.id)}} size="small" icon="pi pi-eye"  > </Button>
+
     }
     const editBody = (rowData) => {
         console.log(rowData)
-        return <Link to={`/updateMemeberList/${rowData.id}`}>ویرایش</Link>
         
+        return <Button onClick={() => {setVisible(true); setSelectedId(rowData.id)}}  size="small" icon="pi pi-pencil"  > </Button>
+
     }
     const deleteMember = (id) => {
         toast.current.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
@@ -41,7 +49,7 @@ export const MemberList = () => {
         })
     }
 
-    
+
     const deleteBody = (rowData) => {
         console.log(rowData)
         return <Button icon="pi pi-trash" onClick={() => deleteMember(rowData.id)} ></Button>
@@ -54,9 +62,6 @@ export const MemberList = () => {
     return <>
         <div className="container">
             <Toast ref={toast} />
-
-            
-            
             <div>
                 <div className="card"  >
                     <DataTable value={libraryMembers} header={header} responsiveLayout="scroll" size='small' >
@@ -78,10 +83,12 @@ export const MemberList = () => {
             </div>
         </div>
 
-        <Dialog header="اضافه کردن عضو جدید"  style={{width:'90%',dir:'rtl'}} position="top" visible={visible} onHide={() => setVisible(false)}>
-            <CreateMember/>
+        <Dialog header="ویرایش" style={{ width: '90%', dir: 'rtl' }} position="top" visible={visible} onHide={onHide  }>
+            <CreateMember id={selectedId}/>
         </Dialog>
-       
+        <Dialog header="اضافه کردن عضو جدید" style={{ width: '90%', dir: 'rtl' }} position="top" visible={detailsVisble} onHide={() => setDetailsVisble(false)}>
+            <MemeberListDetails id={selectedId}/>
+        </Dialog>
 
     </>
 

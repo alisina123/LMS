@@ -12,7 +12,7 @@ import { classNames } from 'primereact/utils'
 import { useNavigate } from 'react-router-dom';
 import { Toast } from 'primereact/toast';
 import axios from 'axios';
-const CreateMember = () => {
+const CreateMember = ({ id }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData, libraryMembers, setlibraryMember] = useState({});
     const [libraries, setLibraries] = useState([]);
@@ -38,24 +38,34 @@ const CreateMember = () => {
     }
 
     useEffect(() => {
+        if (id) {
+            axios.get(`http://localhost:8080/api/libraryMembers/${id}`).then(res => {
+                reset(res.data.data);
+                
+            });
+        } else {
+            reset()
+        }
+
         axios.get("http://localhost:8080/api/libraries").then(response => {
-            console.log(response.data.data);
             setLibraries(response.data.data);
         });
 
-    }, []);
+    }, [id]);
+
     const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues });
+
     const onSubmit = (data) => {
         console.log(data);
         axios.post("http://localhost:8080/api/libraryMembers", data).then(response => {
             console.log(response.data);
-
         });
         reset();
         navigate('/memberList');
-        //toast.current.show({ severity: 'success', summary: 'Success Message', detail: 'Order submitted' });
+        toast.current.show({ severity: 'success', summary: 'Success Message', detail: 'Order submitted' });
 
     };
+
     const getFormErrorMessage = (name) => {
         return errors[name] && <small className="p-error">{errors[name].message}</small>
     };
@@ -162,7 +172,7 @@ const CreateMember = () => {
                     </span>
                         {getFormErrorMessage('job')}</div>
                     <div class="field col-12 md:col-3"> <Controller name="library" control={control} render={({ field }) => (
-                        <Dropdown id={field.name} value={field.value} onChange={(e) => field.onChange(e.value)} options={libraries} optionLabel="name" />
+                        <Dropdown id={field.name} value={field.value} onChange={(e) => field.onChange(e.value)} options={libraries} optionLabel="name" placeholder=" کتابخانه را انتخاب کنید" />
                     )} /></div>
                     <div class="field col-12 md:col-3"><div className="field-checkbox">
                         <Controller name="accept" control={control} rules={{ required: true }} render={({ field, fieldState }) => (

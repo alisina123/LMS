@@ -1,43 +1,32 @@
 import axios from 'axios';
 import React, { useEffect, useState, useRef, Component } from 'react'
-import { Link } from "react-router-dom";
-import { Toast } from 'primereact/toast';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column'
-import { useParams } from "react-router"
-const MemeberListDetails=()=>{
-    const { id } = useParams()
+import OutputPair from '../../shared/OutputPair';
+
+const MemeberListDetails = ({ id }) => {
     const [obj, setObj] = useState({})
-   // const [libraryMembers, setLibraryMembers] = useState([]);
 
     useEffect(() => {
+
         axios.get(`http://localhost:8080/api/libraryMembers/${id}`).then(res => {
             setObj(res.data.data)
         });
     }, [])
+
     return <>
-    <div className="container">
-
-        <div>
-            <div className="card"  >
-                <DataTable value={setObj} responsiveLayout="scroll" size='small' >
-                    <Column field="name" header="نام" />
-                    <Column field="lastName" header="تخلص" />
-                    <Column field="fatherName" header="نام پدر" />
-                    <Column field="registerNumber" header="راجستر نمبر" />
-                    <Column field="degree" header="درجه" />
-                    <Column field="province" header="ولایت" />
-                    <Column field="phone" header="شماره تماس" />
-                    <Column field="currentAddress" header="ادرس فعلی" />
-                    <Column field="guarantee" header="ضمانت" />
-                    <Column field="{obj.library ? obj.library.name : ''}" header="کتابخانه" />
-                </DataTable>
-            </div>
-        </div>
-    </div>
-
+        <OutputPair label="نام" value={obj.name} />
+        <OutputPair label="تخلص" value={obj.lastName} />
+        <OutputPair label="نام پدر" value={obj.fatherName} />
+        <OutputPair label="راجتسرنمبر" value={obj.registerNumber} />
+        <OutputPair label="درجه " value={obj.degree} />
+        <OutputPair label="ولایت" value={obj.province} />
+        <OutputPair label="شماره تماس" value={obj.phone} />
+        <OutputPair label="ادرس فعلی" value={obj.currentAddress} />
+        <OutputPair label="ضمانت" value={obj.guarantee} />
+        <OutputPair label=" کتابخانه" value={obj.library ? obj.library.name : ''} />
+        <OutputPair label=" نمبرتزکره" value={obj.identityNumber} />
+        <OutputPair label="وظیفه" value={obj.job} />
+        <OutputPair label="سال ثبت" value={obj.jointYear} />
     
-
-</>
+    </>
 }
 export default MemeberListDetails

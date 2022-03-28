@@ -89,4 +89,21 @@
       width: 100%;
   }
 }
+.p-datatable .p-datatable-header {
+  background: #f8f9fa;
+  color: #343a40;
+  border: 1px solid #dee2e6;
+  border-width: 1px 0 1px 0;
+  padding: 1rem 1rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.pi-pencil:before {
+  content: "\e942";
+  margin-right: 20px;
+}
+.pi-eye:before {
+  content: "\e966";
+  margin-right: 15px;
+}
                

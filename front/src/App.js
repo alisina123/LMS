@@ -12,7 +12,6 @@ import { Card } from 'primereact/card';
 import "/node_modules/primeflex/primeflex.css";
 import "primeicons/primeicons.css";
 import MemberList from './components/members/MemberList';
-import UpdateMemeberList from './components/members/UpdateMemeberList';
 import MemeberListDetails from './components/members/MemeberListDetails';
 import {
   BrowserRouter,
@@ -35,7 +34,6 @@ function App() {
               <Route path="/memberList" element={<MemberList />} />
               <Route path='/createMember' element={<CreateMember />} />
               <Route path='/memeberListDetails' element={<MemeberListDetails />} />
-              <Route path='/updateMemeberList' element={<UpdateMemeberList />} />
             </Routes>
           </HashRouter>
 
