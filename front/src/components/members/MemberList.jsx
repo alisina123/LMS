@@ -12,6 +12,7 @@ import { InputText } from 'primereact/inputtext';
 import MemeberListDetails from './MemeberListDetails';
 import { Ripple } from 'primereact/ripple';
 import { classNames } from 'primereact/utils';
+import { Toolbar } from 'primereact/toolbar';
 export const MemberList = () => {
 
     const [libraryMembers, setLibraryMembers] = useState([]);
@@ -20,7 +21,7 @@ export const MemberList = () => {
     const [detailsVisble,setDetailsVisble]=useState(false);
     const [selectedId, setSelectedId] = useState();
     
-
+    const [globalFilter, setGlobalFilter] = useState(null);
     const [first1, setFirst1] = useState(0);
     const [rows1, setRows1] = useState(10);
     const [first2, setFirst2] = useState(0);
@@ -169,24 +170,34 @@ export const MemberList = () => {
         console.log(rowData)
         return <Button icon="pi pi-trash" onClick={() => deleteMember(rowData.id)} ></Button>
     }
+    
+        
+    const rightToolbarTemplate = () => {
+        return (
+            <React.Fragment>
+                <Link to="/createMember" ><Button to="/createMember" label="اضافه نمودن" icon="pi pi-plus" className="p-button-success mr-2" > </Button></Link>
+            </React.Fragment>
+        )
+    }      
     const header = (
-        <div className="table-header" dir='rtl'>
-            
-            <Link to="/createMember"><Button to="/createMember" label="اضافه نمودن" size="small" icon="pi pi-plus"  > </Button></Link>
+        <div className="table-header" >
+            <span className="p-input-icon-left">
+                <i className="pi pi-search" />
+                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
+            </span>
         </div>
-    );
-
-   
+    );    
 
     return <>
         <div className="container">
             <Toast ref={toast} />
             <div>
                 <div className="card"  >
-                    <DataTable  value={libraryMembers} header={header} responsiveLayout="scroll" size='small'   paginator 
+                 <Toolbar dir='rtl' className="mb-4"  right={rightToolbarTemplate}></Toolbar>
+                    <DataTable  globalFilter={globalFilter} header={header} value={libraryMembers}  responsiveLayout="scroll" size='small'   paginator 
                     paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
                     currentPageReportTemplate="نشان    {first} به {last} از {totalRecords}" rows={10} rowsPerPageOptions={[10,20,50]}
-                    paginatorLeft={paginatorLeft} paginatorRight={paginatorRight}>
+                    paginatorLeft={paginatorLeft} paginatorRight={paginatorRight}> 
                         <Column  header="#" body={(data, p)=><span>{p.rowIndex+1}</span>}/>
                         <Column field="name" header="نام" />
                         <Column field="lastName" header="تخلص" />
